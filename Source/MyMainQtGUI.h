@@ -2,6 +2,9 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_MyMainQtGUI.h"
+#include "BlankUser.h"
+
+#include <QFileDialog>
 
 class MyMainQtGUI : public QMainWindow
 {
@@ -13,4 +16,6 @@ public:
 
 private:
     Ui::MyMainQtGUIClass ui;
+
+    void BrowseFile();
 };

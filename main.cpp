@@ -1,4 +1,4 @@
-#include "MyMainQtGUI.h"
+#include "Source/MyMainQtGUI.h"
 #include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])
