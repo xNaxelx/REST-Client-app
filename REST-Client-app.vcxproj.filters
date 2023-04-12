@@ -43,9 +43,15 @@
     <ClCompile Include="Source\BlankUser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\RESTClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\BlankUser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RESTClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

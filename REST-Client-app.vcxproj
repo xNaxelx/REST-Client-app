@@ -58,6 +58,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgConfiguration>Debug</VcpkgConfiguration>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -86,11 +89,13 @@
     <QtRcc Include="Qt\MyMainQtGUI.qrc" />
     <QtUic Include="Qt\MyMainQtGUI.ui" />
     <QtMoc Include="Source\MyMainQtGUI.h" />
+    <ClCompile Include="Source\RESTClient.cpp" />
     <ClCompile Include="Source\BlankUser.cpp" />
     <ClCompile Include="Source\MyMainQtGUI.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\RESTClient.h" />
     <ClInclude Include="Source\BlankUser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

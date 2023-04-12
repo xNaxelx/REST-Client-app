@@ -19,7 +19,7 @@ MyMainQtGUI::MyMainQtGUI(QWidget *parent)
     ui.verticalLayout->addWidget(new BlankUser(nullptr));
     ui.verticalLayout->addWidget(new BlankUser(nullptr));
 
-    QObject::connect(ui.lineEdit_2, &QLineEdit::textChanged, this, &MyMainQtGUI::CheckIsValidEmail);
+    QObject::connect(ui.lineEdit_2, &QLineEdit::textChanged, this, &MyMainQtGUI::CheckIsValidInput);
     QObject::connect(ui.pushButton_2, &QPushButton::clicked, this, &MyMainQtGUI::BrowseFile);
 }
 
@@ -55,7 +55,7 @@ void MyMainQtGUI::BrowseFile()
     }
 }
 
-void MyMainQtGUI::CheckIsValidEmail()
+void MyMainQtGUI::CheckIsValidInput()
 {
     if (ui.lineEdit_2->hasAcceptableInput())
     {

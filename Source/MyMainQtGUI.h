@@ -6,7 +6,7 @@
 
 #include <QFileDialog>
 #include <qimagereader.h>
-#include <qvalidator.h>
+#include <qvalidator.h> 
 
 class MyMainQtGUI : public QMainWindow
 {
@@ -17,7 +17,7 @@ public:
     ~MyMainQtGUI();
 
 public slots:
-    void CheckIsValidEmail();
+    void CheckIsValidInput();
 
 private:
     Ui::MyMainQtGUIClass ui;
