@@ -1,12 +1,21 @@
 #include "MyMainQtGUI.h"
 
-MyMainQtGUI::MyMainQtGUI(QWidget *parent)
-    : QMainWindow(parent)
+MyMainQtGUI::MyMainQtGUI(RESTClient* restClient, QWidget *parent)
+    : restClient(restClient), QMainWindow(parent)
 {
     ui.setupUi(this);
 
     QRegularExpression rx("[a-zA-Z0-9_.%]+\@[a-zA-Z0-9]+\\.[a-zA-Z0-9]{1,100}", QRegularExpression::CaseInsensitiveOption);
     ui.lineEdit_2->setValidator(new QRegularExpressionValidator(rx, this));
+
+    positions = restClient->GETPositions();
+    for (auto it = positions->begin(); it != positions->end(); it += 2)
+    {
+        auto button = new QRadioButton(ui.groupBox);
+        button->setGeometry(QRect(10, 30 * ui.groupBox->children().count(), 201, 20));
+        button->setText((++it)->c_str());
+        --it;
+    }
 
     BlankUser* blank = new BlankUser(nullptr);
 

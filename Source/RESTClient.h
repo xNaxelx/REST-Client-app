@@ -2,22 +2,25 @@
 
 #include <cpr/api.h>
 #include <list>
+#include <nlohmann/json.hpp>
+#include <vector>
 
 using namespace std;
 using namespace cpr;
+using json = nlohmann::json;
 
 class RESTClient
 {
 public:
 	RESTClient(string serverUrl);
 
-	list<list<string>> GETUsers();
-	void GETPositions();
+	vector<string> *GETUsers();
+	vector<string> *GETPositions();
 	bool POSTUser(string&token, string&name, string&email, string&phone, string&photoPath);
 
 private:
-	wstring GETToken();
+	string GETToken();
 
-	Url serverUrl{""};
+	Url url;
 };
 

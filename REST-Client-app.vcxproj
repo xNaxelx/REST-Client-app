@@ -93,6 +93,7 @@
     <ClCompile Include="Source\BlankUser.cpp" />
     <ClCompile Include="Source\MyMainQtGUI.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="Source\MyMainQtGUI.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\RESTClient.h" />

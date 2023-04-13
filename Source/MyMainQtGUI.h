@@ -7,13 +7,18 @@
 #include <QFileDialog>
 #include <qimagereader.h>
 #include <qvalidator.h> 
+#include <vector>
+#include "RESTClient.h"
+#include <qradiobutton.h>
+
+using namespace std;
 
 class MyMainQtGUI : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MyMainQtGUI(QWidget *parent = nullptr);
+    MyMainQtGUI(RESTClient *restClient, QWidget *parent = nullptr);
     ~MyMainQtGUI();
 
 public slots:
@@ -21,8 +26,12 @@ public slots:
 
 private:
     Ui::MyMainQtGUIClass ui;
+    RESTClient *restClient;
 
-    bool isCorrectEmail = false, isCorrectPhoto = false;
+    bool isCorrectEmail = false;
+    bool isCorrectPhoto = false;
+
+    vector<string> *positions;
     
 
     void BrowseFile();

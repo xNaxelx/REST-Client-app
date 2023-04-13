@@ -5,8 +5,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MyMainQtGUI w;
-    RESTClient("wad");
+    RESTClient restClient(argv[1]);
+    MyMainQtGUI w(&restClient);
     w.show();
     return a.exec();
 }
