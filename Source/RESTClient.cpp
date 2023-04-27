@@ -6,10 +6,40 @@ RESTClient::RESTClient(string serverUrl) : url(serverUrl)
 	GETPositions();
 }
 
-//list<list<string>> RESTClient::GETUsers()
-//{
-//	return (list<list<string>>)NULL;
-//}
+RESTClient::RESTClient(const RESTClient& restClient) : url(restClient.url)
+{
+	
+}
+
+vector<QString>* RESTClient::GETUsers(unsigned int page, unsigned int countOnPage)
+{
+	auto users = new vector<QString>();
+
+	Response response = Get(Url{ url + "/users?page=" + to_string(page) +  "&count=" + to_string(countOnPage)});
+
+	if (response.status_code != 200) return users;
+
+	json jsonResponse = json::parse(response.text);
+	json object = jsonResponse["users"];
+
+	for (auto it = object.begin(); it != object.end(); ++it)
+	{
+		string photo = it->find("photo").value();
+		string name = it->find("name").value();
+		string position = it->find("position").value();
+		string email = it->find("email").value();
+		string phone = it->find("phone").value();
+		string id = to_string(it->find("id").value()).c_str();
+		users->push_back(photo.c_str());
+		users->push_back(name.c_str());
+		users->push_back(position.c_str());
+		users->push_back(email.c_str());
+		users->push_back(phone.c_str());
+		users->push_back(id.c_str());
+	}
+
+	return users; 
+}
 
 vector<string>* RESTClient::GETPositions()
 {

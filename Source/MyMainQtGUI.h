@@ -10,6 +10,7 @@
 #include <vector>
 #include "RESTClient.h"
 #include <qradiobutton.h>
+#include <memory>
 
 using namespace std;
 
@@ -26,13 +27,18 @@ public slots:
 
 private:
     Ui::MyMainQtGUIClass ui;
-    RESTClient *restClient;
+    unique_ptr<RESTClient> restClient;
+    unique_ptr<vector<string>> positions;
+    vector<BlankUser*> users;
 
+    int currentPage = 1;
+    int usersCountOnPage = 6;
     bool isCorrectEmail = false;
     bool isCorrectPhoto = false;
 
-    vector<string> *positions;
-    
 
     void BrowseFile();
+    void UploadUsersPage(unsigned int page, unsigned int countOnPage);
+    bool UploadUsersList(unsigned int page, unsigned int countOnPage);
+    void ShowMore(bool checked = false);
 };

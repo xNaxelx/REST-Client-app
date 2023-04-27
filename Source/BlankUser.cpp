@@ -5,7 +5,6 @@ BlankUser::BlankUser(QWidget* parent) : QWidget(parent)
 	
 
 	QSizePolicy sizePolicyThis(QSizePolicy::Preferred, QSizePolicy::Maximum);
-	//sizePolicyThis.setHorizontalStretch(255);
 	this->setSizePolicy(sizePolicyThis);
 
 	this->setGeometry(QRect(0, 0, 500, 200));
@@ -61,5 +60,66 @@ BlankUser::BlankUser(QWidget* parent) : QWidget(parent)
 	horizontalLine->setFrameShape(QFrame::HLine);
 	horizontalLine->setFrameShadow(QFrame::Sunken);
 
-	//this->(horizontalLine);
+	networkAM = std::make_unique<QNetworkAccessManager>(new QNetworkAccessManager(this));
+	QObject::connect(networkAM.get(), &QNetworkAccessManager::finished, this, &BlankUser::ConvertByteToImage);
+}
+
+BlankUser::BlankUser(QString avatar, QString name, QString role, QString email, QString phoneNumber, QWidget* parent) : BlankUser(parent)
+{
+	if (avatar == "" && name == "" && role == "" && email == "" && phoneNumber == "")
+	{
+		this->hide();
+	}
+	else
+	{
+		this->show();
+
+		this->avatar->setPixmap(QPixmap(":/Image/Grey.png").scaled(80, 80));
+		this->name->setText("none");
+		this->role->setText("none");
+		this->email->setText("none");
+		this->phoneNumber->setText("none");
+	}
+
+	this->name->setText(name);
+	this->role->setText(role);
+	this->email->setText(email);
+	this->phoneNumber->setText(phoneNumber);
+
+	
+	QNetworkReply* reply = networkAM->get(QNetworkRequest(avatar));
+
+}
+
+void BlankUser::ConvertByteToImage(QNetworkReply* reply)
+{
+	QVariant statusCodeV = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+	QVariant redirectionTargetUrl =	reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+
+	if (reply->error() == QNetworkReply::NoError)
+	{
+		QByteArray bytes = reply->readAll();
+		QPixmap pixmap;
+		pixmap.loadFromData(bytes);
+		this->avatar->setPixmap(pixmap.scaled(80, 80));
+	}
+	else
+	{
+		this->avatar->setPixmap(QPixmap(":/Image/Grey.png").scaled(80, 80));
+	}
+
+	reply->deleteLater();
+}
+
+void BlankUser::ChangeContent(QString avatar, QString name, QString role, QString email, QString phoneNumber)
+{
+
+	this->name->setText(name);
+	this->role->setText(role);
+	this->email->setText(email);
+	this->phoneNumber->setText(phoneNumber);
+
+
+	QNetworkReply* reply = networkAM->get(QNetworkRequest(avatar));
 }

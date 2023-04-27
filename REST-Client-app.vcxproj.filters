@@ -48,10 +48,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\BlankUser.h">
+    <ClInclude Include="Source\RESTClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\RESTClient.h">
+    <ClInclude Include="Source\BlankUser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
