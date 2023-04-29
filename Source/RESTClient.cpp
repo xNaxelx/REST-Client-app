@@ -61,13 +61,36 @@ vector<string>* RESTClient::GETPositions()
 	return positions;
 }
 
+void RESTClient::POSTUser(string name, string email, string phone, int position_id, string photoPath, QLabel* statusText)
+{
+	Response tokenResponse = Get(Url{ url + "/token" });
 
+	if (tokenResponse.status_code != 200)
+	{
+		statusText->setText(tokenResponse.text.c_str());
+		return;
+	}
 
-//Response response = Post(Url{ "https://server.server/api/v1/users" },
-//	Header{ {"Token", "eyJpdiI6IndEeVNyRDJuOEdjQ1V5RWZUTU9MQXc9PSIsInZhbHVlIjoiNVR3TkdhM3I4NElZNlZFQnpwVlQyRTkzQzEwVGc5SEsreFNtb1VPcVNPZERUZVpZZG5SY25aZmpQM2tWWUo0MGdFTnYycnhQVlpqemR6MEpzYVwveVwvQT09IiwibWFjIjoiOWZlM2FjYjdiZjBlNWY3NDY3N2UxMTBhODY3YjEyNDgyYjM5M2JlYzViYjgzNmM3NGZhMmM0MTZkMzZlOWRmMiJ9"} },
-//	Multipart{ {{"name", "Oleg"}, {"email", "awgwagaw@gawb.awg"}, {"phone", "+380003002020"}, {"position_id", 1}, {"photo", File{"C:/skins/stump-3.jpg"}}} }
-//);
-//
-//
-//string awd = response.text;
-//long fgaw = response.status_code;
+	json jsonResponse = json::parse(tokenResponse.text);
+	string token = jsonResponse["token"];
+
+	Response response = Post(Url{ url + "/users" },
+		Header{ {"Token", token} },
+		Multipart{ {{"name", name}, {"email", email}, {"phone", phone}, {"position_id", position_id}, {"photo", File{photoPath}}} }
+	);
+
+	if (response.status_code == 200 || response.status_code == 201)
+	{
+		statusText->setText("New user successfully registered");
+	}
+	else if (response.status_code == 0)
+	{
+		statusText->setText("No response from server");
+	}
+	else
+	{
+		statusText->setText("Registration failed");
+	}
+
+}
+

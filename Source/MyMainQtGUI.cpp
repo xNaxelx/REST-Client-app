@@ -7,8 +7,10 @@ MyMainQtGUI::MyMainQtGUI(RESTClient* restClient, QWidget *parent)
 
     ui.setupUi(this);
 
-    QRegularExpression rx("[a-zA-Z0-9_.%]+\@[a-zA-Z0-9]+\\.[a-zA-Z0-9]{1,100}", QRegularExpression::CaseInsensitiveOption);
-    ui.lineEdit_2->setValidator(new QRegularExpressionValidator(rx, this));
+    QRegularExpression rx1("[a-zA-Z0-9_.%]+\@[a-zA-Z0-9]+\\.[a-zA-Z0-9]{1,100}", QRegularExpression::CaseInsensitiveOption);
+    ui.lineEdit_2->setValidator(new QRegularExpressionValidator(rx1, this));
+    QRegularExpression rx2("[+]{1}+[3]{1}+[8]{1}+[0-9]{10}", QRegularExpression::CaseInsensitiveOption);
+    ui.lineEdit_3->setValidator(new QRegularExpressionValidator(rx2, this));
 
     positions = make_unique<vector<string>>(*restClient->GETPositions());
     for (auto it = positions->begin(); it != positions->end(); it += 2)
@@ -24,9 +26,17 @@ MyMainQtGUI::MyMainQtGUI(RESTClient* restClient, QWidget *parent)
 
     ui.verticalLayout->setAlignment(Qt::AlignTop);
 
-    QObject::connect(ui.lineEdit_2, &QLineEdit::textChanged, this, &MyMainQtGUI::CheckIsValidInput);
+    loadingLabel = new QLabel("lbl", ui.pushButton);
+    loadingMovie = new QMovie(":/Image/Loading.gif");
+    loadingMovie->setScaledSize(QSize(25, 25));
+    loadingLabel->setGeometry(QRect(QPoint(ui.pushButton->width() / 2 - loadingMovie->scaledSize().width() / 2, ui.pushButton->height() / 2 - loadingMovie->scaledSize().height() / 2), loadingMovie->scaledSize()));
+    loadingLabel->setMovie(loadingMovie);
+
+    QObject::connect(ui.lineEdit_2, &QLineEdit::textChanged, this, &MyMainQtGUI::CheckIsValidInputEmail);
+    QObject::connect(ui.lineEdit_3, &QLineEdit::textChanged, this, &MyMainQtGUI::CheckIsValidInputPhone);
     QObject::connect(ui.pushButton_2, &QPushButton::clicked, this, &MyMainQtGUI::BrowseFile);
     QObject::connect(ui.pushButton, &QPushButton::clicked, this, &MyMainQtGUI::ShowMore);
+    QObject::connect(ui.pushButton_3, &QPushButton::clicked, this, &MyMainQtGUI::RegisterNewUser);
 }
 
 MyMainQtGUI::~MyMainQtGUI()
@@ -61,7 +71,7 @@ void MyMainQtGUI::BrowseFile()
     }
 }
 
-void MyMainQtGUI::CheckIsValidInput()
+void MyMainQtGUI::CheckIsValidInputEmail()
 {
     if (ui.lineEdit_2->hasAcceptableInput())
     {
@@ -74,6 +84,22 @@ void MyMainQtGUI::CheckIsValidInput()
     else
     {
         ui.lineEdit_2->setStyleSheet("QLineEdit { color: red;}");
+    }
+}
+
+void MyMainQtGUI::CheckIsValidInputPhone()
+{
+    if (ui.lineEdit_3->hasAcceptableInput())
+    {
+        ui.lineEdit_3->setStyleSheet("QLineEdit { color: black;}");
+    }
+    else if (ui.lineEdit_3->text() == "")
+    {
+        ui.lineEdit_3->setStyleSheet("QLineEdit { color: black;}");
+    }
+    else
+    {
+        ui.lineEdit_3->setStyleSheet("QLineEdit { color: red;}");
     }
 }
 
@@ -124,9 +150,53 @@ void MyMainQtGUI::UploadUsersPage(unsigned int page, unsigned int countOnPage)
     delete userList;
 }
 
-void MyMainQtGUI::ShowMore(bool checked)
+void MyMainQtGUI::ShowMore()
 {
+    ui.pushButton->setEnabled(false);
+    ui.pushButton->setText("");
+    loadingMovie->start();
+    loadingLabel->setGeometry(QRect(QPoint(ui.pushButton->width() / 2 - loadingMovie->scaledSize().width() / 2, ui.pushButton->height() / 2 - loadingMovie->scaledSize().height() / 2), loadingMovie->scaledSize()));
+
     currentPage++;
 
     UploadUsersPage(currentPage, usersCountOnPage);
+
+    loadingLabel->setGeometry(QRect(QPoint(9999, 9999), loadingMovie->scaledSize()));
+    loadingMovie->stop();
+    ui.pushButton->setText("Show more");
+    ui.pushButton->setEnabled(true);
+}
+
+void MyMainQtGUI::RegisterNewUser()
+{
+    if (ui.lineEdit->text().size() < 2 || ui.lineEdit->text().size() < 60)
+    {
+        ui.label_7->setText("Please, enter name. minLength: 2 - maxLength: 60");
+        return;
+    }
+    if (ui.lineEdit_2->hasAcceptableInput() != true)
+    {
+        ui.label_7->setText("Please, enter correct email");
+        return;
+    }
+    if (ui.lineEdit_3->hasAcceptableInput() != true)
+    {
+        ui.label_7->setText("Please, enter correct phone number");
+        return;
+    }
+    QList<QRadioButton*> positions = ui.groupBox->findChildren<QRadioButton*>();
+    int positionID = -9999;
+    for (int i = 0; i < ui.groupBox->children().count(); i++)
+    {
+        if (positions[i]->isChecked())
+        {
+            positionID = i + 1;
+        }
+    }
+    if (positionID == -9999)
+    {
+        ui.label_7->setText("Choose position");
+        return;
+    }
+    restClient->POSTUser(ui.lineEdit->text().toStdString(), ui.lineEdit_2->text().toStdString(), ui.lineEdit_3->text().toStdString(), positionID, ui.lineEdit_4->text().toStdString(), ui.label_7);
 }

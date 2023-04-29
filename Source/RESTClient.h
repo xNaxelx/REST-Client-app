@@ -5,6 +5,7 @@
 #include <nlohmann/json.hpp>
 #include <vector>
 #include <QtCore/qstring.h>
+#include <qlabel.h>
 
 using namespace std;
 using namespace cpr;
@@ -18,7 +19,7 @@ public:
 
 	vector<QString> *GETUsers(unsigned int page, unsigned int countOnPage);
 	vector<string> *GETPositions();
-	bool POSTUser(string&token, string&name, string&email, string&phone, string&photoPath);
+	void POSTUser(string name, string email, string phone, int position_id, string photoPath, QLabel* statusText);
 
 private:
 	string GETToken();

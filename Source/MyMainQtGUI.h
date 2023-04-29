@@ -11,6 +11,8 @@
 #include "RESTClient.h"
 #include <qradiobutton.h>
 #include <memory>
+#include <qmovie.h>
+#include <qthread.h>
 
 using namespace std;
 
@@ -23,7 +25,8 @@ public:
     ~MyMainQtGUI();
 
 public slots:
-    void CheckIsValidInput();
+    void CheckIsValidInputEmail();
+    void CheckIsValidInputPhone();
 
 private:
     Ui::MyMainQtGUIClass ui;
@@ -36,9 +39,12 @@ private:
     bool isCorrectEmail = false;
     bool isCorrectPhoto = false;
 
+    QLabel* loadingLabel;
+    QMovie* loadingMovie;
 
     void BrowseFile();
     void UploadUsersPage(unsigned int page, unsigned int countOnPage);
     bool UploadUsersList(unsigned int page, unsigned int countOnPage);
-    void ShowMore(bool checked = false);
+    void ShowMore();
+    void RegisterNewUser();
 };
