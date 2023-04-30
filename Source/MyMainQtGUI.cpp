@@ -125,15 +125,12 @@ void MyMainQtGUI::UploadUsersPage(unsigned int page, unsigned int countOnPage)
     }
     else if (userList->size() / 6 % countOnPage != 0)
     {
-        int awf = userList->size();
         for (int i = 0; i < userList->size() / 6; i++)
         {
             users[i]->ChangeContent((*userList)[i * 6 + 0], (*userList)[i * 6 + 1], (*userList)[i * 6 + 2], (*userList)[i * 6 + 3], (*userList)[i * 6 + 4]);
         }
         for (int i = 0; userList->size() / 6 + i < countOnPage; i++)
         {
-            int awf = userList->size() / 6 + i;
-            int hseg = users.size();
             users[userList->size() / 6 + i]->hide();
         }
 
@@ -149,6 +146,14 @@ void MyMainQtGUI::ShowMore()
     ui.pushButton->setText("");
     loadingMovie->start();
     loadingLabel->setGeometry(QRect(QPoint(ui.pushButton->width() / 2 - loadingMovie->scaledSize().width() / 2, ui.pushButton->height() / 2 - loadingMovie->scaledSize().height() / 2), loadingMovie->scaledSize()));
+
+    if (currentPage == 0)
+    {
+        foreach (auto iterator, users)
+        {
+            iterator->show();
+        }
+    }
 
     currentPage++;
 
@@ -193,6 +198,6 @@ void MyMainQtGUI::RegisterNewUser()
     }
     restClient->POSTUser(ui.lineEdit->text().toStdString(), ui.lineEdit_2->text().toStdString(), ui.lineEdit_3->text().toStdString(), positionID, ui.lineEdit_4->text().toStdString(), ui.label_7);
 
-    currentPage = 1;
+    currentPage = 0;
     ShowMore();
 }
