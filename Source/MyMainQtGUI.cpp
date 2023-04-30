@@ -162,7 +162,7 @@ void MyMainQtGUI::ShowMore()
 
 void MyMainQtGUI::RegisterNewUser()
 {
-    if (ui.lineEdit->text().size() < 2 || ui.lineEdit->text().size() < 60)
+    if (ui.lineEdit->text().size() < 2 || ui.lineEdit->text().size() > 60)
     {
         ui.label_7->setText("Please, enter name. minLength: 2 - maxLength: 60");
         return;
