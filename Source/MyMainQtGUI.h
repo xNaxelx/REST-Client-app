@@ -38,13 +38,13 @@ private:
     int usersCountOnPage = 6;
     bool isCorrectEmail = false;
     bool isCorrectPhoto = false;
+    bool isUserBlankInited = false;
 
     QLabel* loadingLabel;
     QMovie* loadingMovie;
 
     void BrowseFile();
     void UploadUsersPage(unsigned int page, unsigned int countOnPage);
-    bool UploadUsersList(unsigned int page, unsigned int countOnPage);
     void ShowMore();
     void RegisterNewUser();
 };

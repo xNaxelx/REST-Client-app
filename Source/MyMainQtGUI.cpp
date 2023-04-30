@@ -103,21 +103,11 @@ void MyMainQtGUI::CheckIsValidInputPhone()
     }
 }
 
-bool MyMainQtGUI::UploadUsersList(unsigned int page, unsigned int countOnPage)
-{
-    for (int i = countOnPage; i != 0; i--)
-    {
-        ui.verticalLayout->addWidget(new BlankUser(nullptr));
-    }
-
-    return true;
-}
-
 void MyMainQtGUI::UploadUsersPage(unsigned int page, unsigned int countOnPage)
 {
     vector<QString>* userList = restClient->GETUsers(currentPage, countOnPage);
 
-    if(currentPage == 1 && userList->size() != 0)
+    if(isUserBlankInited == false && userList->size() != 0)
     {   
         for (int i = 0; i < usersCountOnPage; i++)
         {
@@ -201,4 +191,7 @@ void MyMainQtGUI::RegisterNewUser()
         return;
     }
     restClient->POSTUser(ui.lineEdit->text().toStdString(), ui.lineEdit_2->text().toStdString(), ui.lineEdit_3->text().toStdString(), positionID, ui.lineEdit_4->text().toStdString(), ui.label_7);
+
+    currentPage = 1;
+    ShowMore();
 }
