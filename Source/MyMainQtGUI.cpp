@@ -113,6 +113,7 @@ void MyMainQtGUI::UploadUsersPage(unsigned int page, unsigned int countOnPage)
         {
             users.push_back(new BlankUser((*userList)[i * 6 + 0], (*userList)[i * 6 + 1], (*userList)[i * 6 + 2], (*userList)[i * 6 + 3], (*userList)[i * 6 + 4]));
             ui.verticalLayout->addWidget(users[i]);
+            isUserBlankInited = true;
         }
     }
     else if(userList->size() / 6 % countOnPage == 0 && userList->size() != 0)
