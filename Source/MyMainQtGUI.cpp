@@ -145,6 +145,8 @@ void MyMainQtGUI::UploadUsersPage(unsigned int page, unsigned int countOnPage)
             int hseg = users.size();
             users[userList->size() / 6 + i]->hide();
         }
+
+        ui.pushButton->setEnabled(false);
     }
 
     delete userList;
