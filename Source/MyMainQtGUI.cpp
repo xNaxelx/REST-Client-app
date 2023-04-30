@@ -117,7 +117,7 @@ void MyMainQtGUI::UploadUsersPage(unsigned int page, unsigned int countOnPage)
 {
     vector<QString>* userList = restClient->GETUsers(currentPage, countOnPage);
 
-    if(currentPage == 1)
+    if(currentPage == 1 && userList->size() != 0)
     {   
         for (int i = 0; i < usersCountOnPage; i++)
         {
