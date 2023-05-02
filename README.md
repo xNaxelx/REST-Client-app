@@ -1,6 +1,6 @@
 # REST-Client-app
 
-This is a client application for the Windows platform, developed in Qt, using REST requests
+This is a client for displaying and modifying the user database located on the server. Work on Windows platform, developed in Qt, using REST requests
 
 https://user-images.githubusercontent.com/46362288/235351705-f50d7ac2-c6a0-4f54-8982-de9c0c979bd6.mp4
 
